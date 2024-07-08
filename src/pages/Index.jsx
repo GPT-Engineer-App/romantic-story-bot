@@ -2,18 +2,38 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const Index = () => {
   const [prompt, setPrompt] = useState("");
   const [story, setStory] = useState("");
+  const [category, setCategory] = useState("");
+
+  const categories = [
+    { value: "romance", label: "Romance" },
+    { value: "fantasy", label: "Fantasy Romance" },
+    { value: "historical", label: "Historical Romance" },
+    { value: "contemporary", label: "Contemporary Romance" },
+    { value: "paranormal", label: "Paranormal Romance" },
+  ];
 
   const generateStory = () => {
     // Mock story generation
-    const mockStory = `As the sun dipped below the horizon, painting the sky in hues of pink and orange, Sarah's heart fluttered with anticipation. She had been waiting for this moment for what felt like an eternity. The soft sand beneath her feet and the gentle lapping of waves created the perfect backdrop for their long-awaited reunion.
-
-    In the distance, she saw a figure approaching. It was him. Time seemed to slow as he drew near, his familiar silhouette becoming clearer with each step. When their eyes finally met, the world around them faded away. Without a word, they embraced, years of longing dissolving in an instant.
-
-    As they held each other close, Sarah knew that this was just the beginning of their greatest adventure yet. With intertwined hands and hearts full of promise, they walked along the shoreline, ready to write the next chapter of their love story together.`;
+    const mockStory = `In a ${category === 'historical' ? 'bygone era' : 'world'} where love knows no bounds, 
+    ${prompt}. As the ${category === 'fantasy' ? 'magical' : 'gentle'} breeze whispered through the air, 
+    two hearts found each other in the most unexpected of circumstances. 
+    Their eyes met, and in that instant, they knew their lives would never be the same. 
+    ${category === 'paranormal' ? 'Supernatural forces seemed to draw them together, ' : ''}
+    ${category === 'contemporary' ? 'Despite the challenges of modern life, ' : ''}
+    their love blossomed like a delicate flower, growing stronger with each passing day. 
+    Together, they embarked on a journey of passion, trust, and unwavering devotion, 
+    proving that true love can conquer all obstacles.`;
 
     setStory(mockStory);
   };
@@ -27,14 +47,28 @@ const Index = () => {
           <CardTitle>Enter Your Prompt</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex space-x-2">
-            <Input
-              placeholder="Enter a romantic prompt..."
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              className="flex-grow"
-            />
-            <Button onClick={generateStory}>Generate Story</Button>
+          <div className="flex flex-col space-y-4">
+            <div className="flex space-x-2">
+              <Input
+                placeholder="Enter a romantic prompt..."
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                className="flex-grow"
+              />
+              <Button onClick={generateStory}>Generate Story</Button>
+            </div>
+            <Select onValueChange={setCategory} value={category}>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((cat) => (
+                  <SelectItem key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </CardContent>
       </Card>
